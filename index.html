@@ -260,11 +260,6 @@
       transform-origin:
         center center;
 
-
-      /* =========================
-         BRIGHT FLOWER COLORS
-      ========================= */
-
       filter:
         brightness(1.4)
         saturate(1.6)
@@ -274,10 +269,8 @@
           rgba(255, 255, 255, 0.4)
         );
 
-
       mix-blend-mode:
         normal;
-
 
       transform:
         translate(-50%, -50%)
@@ -331,6 +324,7 @@
           scale(var(--scale))
           rotate(var(--rotation));
       }
+
     }
 
 
@@ -396,6 +390,7 @@
             calc(var(--rotation) + 40deg)
           );
       }
+
     }
 
 
@@ -445,6 +440,7 @@
             calc(var(--rotation) - 360deg)
           );
       }
+
     }
 
 
@@ -494,6 +490,7 @@
             calc(var(--rotation) + 360deg)
           );
       }
+
     }
 
 
@@ -532,13 +529,16 @@
         opacity: 0;
       }
 
+
       40% {
         opacity: 0.8;
       }
 
+
       100% {
         opacity: 0;
       }
+
     }
 
 
@@ -575,6 +575,10 @@
 
 <body>
 
+
+  <!-- =========================
+       OPENING
+  ========================= -->
 
   <main
     class="opening"
@@ -616,13 +620,14 @@
 
 
   <!-- =========================
-       BACKGROUND MUSIC
+       MUSIC
   ========================= -->
 
   <audio
     id="backgroundMusic"
     src="You Da One Rihanna.mp3"
     preload="auto"
+    loop
   ></audio>
 
 
@@ -701,13 +706,11 @@
       flower.src =
         flowerImages[
           Math.floor(
-            Math.random()
-            * flowerImages.length
+            Math.random() *
+            flowerImages.length
           )
         ];
 
-
-      /* SIZE */
 
       const size =
         110 +
@@ -720,18 +723,16 @@
       );
 
 
-      /* POSITION */
-
       const x =
-        (Math.random() - 0.5)
-        * window.innerWidth
-        * 2.2;
+        (Math.random() - 0.5) *
+        window.innerWidth *
+        2.2;
 
 
       const y =
-        (Math.random() - 0.5)
-        * window.innerHeight
-        * 2.2;
+        (Math.random() - 0.5) *
+        window.innerHeight *
+        2.2;
 
 
       flower.style.setProperty(
@@ -746,8 +747,6 @@
       );
 
 
-      /* SCALE */
-
       const scale =
         0.7 +
         Math.random() * 1.5;
@@ -759,11 +758,9 @@
       );
 
 
-      /* ROTATION */
-
       const rotation =
-        (Math.random() - 0.5)
-        * 1080;
+        (Math.random() - 0.5) *
+        1080;
 
 
       flower.style.setProperty(
@@ -771,8 +768,6 @@
         rotation + "deg"
       );
 
-
-      /* DURATION */
 
       const duration =
         1.7 +
@@ -786,8 +781,8 @@
 
 
       flower.style.animationDelay =
-        Math.random() * 0.35
-        + "s";
+        Math.random() * 0.35 +
+        "s";
 
 
       flower.dataset.index =
@@ -800,11 +795,12 @@
 
 
       return flower;
+
     }
 
 
     /* =========================
-       START FLOWER SHOW
+       START
     ========================= */
 
     function startFlowerShow() {
@@ -813,34 +809,55 @@
       if (started) {
 
         return;
+
       }
 
 
       started = true;
 
 
-      /* =========================
-         START MUSIC
-      ========================= */
+      /*
+        MUSIC STARTS HERE.
 
-      backgroundMusic.currentTime = 0;
+        Karena fungsi ini dipanggil
+        langsung dari tombol yang
+        ditekan user, browser
+        mengizinkan audio dimainkan.
+      */
 
       backgroundMusic.volume = 0.6;
 
+      backgroundMusic.currentTime = 0;
+
 
       backgroundMusic.play()
-        .catch(() => {
+        .then(() => {
 
           console.log(
-            "Music could not play."
+            "Music started successfully"
+          );
+
+        })
+        .catch((error) => {
+
+          console.log(
+            "Music error:",
+            error
           );
 
         });
 
 
-      /* =========================
-         HIDE CONTENT
-      ========================= */
+      /*
+        Simpan status bahwa musik
+        sedang berjalan.
+      */
+
+      localStorage.setItem(
+        "musicStarted",
+        "true"
+      );
+
 
       content.classList.add(
         "hide"
@@ -965,27 +982,25 @@
 
       /* =========================
          SAVE MUSIC POSITION
-         BEFORE GAME
       ========================= */
 
       setTimeout(
         () => {
 
-          try {
+          /*
+            Simpan posisi lagu
+            menggunakan localStorage.
+          */
 
-            sessionStorage.setItem(
-              "musicTime",
-              backgroundMusic.currentTime
-            );
+          localStorage.setItem(
+            "musicTime",
+            backgroundMusic.currentTime
+          );
 
-          } catch (error) {
 
-            console.log(
-              "Could not save music position."
-            );
-
-          }
-
+          /*
+            Masuk ke game.
+          */
 
           window.location.href =
             "game.html";
