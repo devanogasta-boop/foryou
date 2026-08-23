@@ -129,4 +129,99 @@
 
     @keyframes spread {
       0% {
-        transform: translate(0, 0) scale(0
+        transform: translate(0, 0) scale(0.3) rotate(0deg);
+        opacity: 1;
+      }
+
+      100% {
+        transform:
+          translate(
+            calc((var(--x) - 50) * 2vw),
+            calc((var(--y) - 50) * 2vh)
+          )
+          scale(1.4)
+          rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 35px;
+      }
+
+      p {
+        font-size: 15px;
+      }
+
+      .flower {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="opening" id="opening">
+
+    <div class="flower f1">🌸</div>
+    <div class="flower f2">🌷</div>
+    <div class="flower f3">🌹</div>
+    <div class="flower f4">🌸</div>
+    <div class="flower f5">🌼</div>
+    <div class="flower f6">🌷</div>
+
+    <div class="content">
+      <h1>For You ♡</h1>
+
+      <p>A little place made just for you.</p>
+
+      <button onclick="openStory()">
+        Tap to Begin ♡
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    function openStory() {
+
+      const opening = document.getElementById("opening");
+
+      const flowers = ["🌸", "🌷", "🌹", "🌼", "💮"];
+
+      for (let i = 0; i < 40; i++) {
+
+        const petal = document.createElement("div");
+
+        petal.classList.add("petal");
+
+        petal.innerText =
+          flowers[Math.floor(Math.random() * flowers.length)];
+
+        petal.style.setProperty(
+          "--x",
+          Math.random() * 100
+        );
+
+        petal.style.setProperty(
+          "--y",
+          Math.random() * 100
+        );
+
+        opening.appendChild(petal);
+
+        setTimeout(() => {
+          petal.remove();
+        }, 2000);
+      }
+
+      setTimeout(() => {
+        alert("Our little story is about to begin... ♡");
+      }, 900);
+    }
+  </script>
+
+</body>
+</html>
