@@ -480,6 +480,18 @@
 <body>
 
 
+  <!-- =========================
+       BACKGROUND MUSIC
+  ========================= -->
+
+  <audio
+    id="backgroundMusic"
+    src="You Da One Rihanna.mp3"
+    preload="auto"
+    loop
+  ></audio>
+
+
   <main class="screen">
 
 
@@ -598,6 +610,77 @@
 
 
     /* =========================
+       BACKGROUND MUSIC
+    ========================= */
+
+    const backgroundMusic =
+      document.getElementById(
+        "backgroundMusic"
+      );
+
+
+    /*
+      Volume dibuat lembut
+      supaya tidak terlalu keras.
+    */
+
+    backgroundMusic.volume = 0.45;
+
+
+    /*
+      Coba lanjutkan lagu ketika
+      halaman messages dibuka.
+    */
+
+    function startMusic() {
+
+      backgroundMusic.play()
+        .catch(() => {
+
+          /*
+            Browser mungkin menolak
+            autoplay sampai ada interaksi.
+          */
+
+        });
+
+    }
+
+
+    /*
+      Coba langsung memainkan lagu.
+    */
+
+    startMusic();
+
+
+    /*
+      Kalau autoplay diblokir,
+      klik pertama pada halaman
+      akan memulai lagu.
+    */
+
+    document.addEventListener(
+      "click",
+      () => {
+
+        if (
+          backgroundMusic.paused
+        ) {
+
+          backgroundMusic.play()
+            .catch(() => {});
+
+        }
+
+      },
+      {
+        once: true
+      }
+    );
+
+
+    /* =========================
        MESSAGES
     ========================= */
 
@@ -661,9 +744,6 @@
 
     /* =========================
        SOFT POP SOUND
-       
-       Tidak membutuhkan file audio.
-       Suara dibuat langsung oleh browser.
     ========================= */
 
     let audioContext = null;
@@ -672,10 +752,6 @@
     function playPop() {
 
       try {
-
-        /* =========================
-           CREATE AUDIO CONTEXT
-        ========================= */
 
         if (!audioContext) {
 
@@ -688,10 +764,6 @@
         }
 
 
-        /* =========================
-           RESUME AUDIO
-        ========================= */
-
         if (
           audioContext.state ===
           "suspended"
@@ -702,35 +774,20 @@
         }
 
 
-        /* =========================
-           OSCILLATOR
-        ========================= */
-
         const oscillator =
           audioContext.createOscillator();
 
-
-        /* =========================
-           VOLUME
-        ========================= */
 
         const gain =
           audioContext.createGain();
 
 
-        /* =========================
-           SOFT SOUND
-        ========================= */
-
         oscillator.type =
           "sine";
 
 
-        const frequency = 650;
-
-
         oscillator.frequency.setValueAtTime(
-          frequency,
+          650,
           audioContext.currentTime
         );
 
@@ -740,10 +797,6 @@
           audioContext.currentTime + 0.16
         );
 
-
-        /* =========================
-           SOFT VOLUME
-        ========================= */
 
         gain.gain.setValueAtTime(
           0.08,
@@ -757,10 +810,6 @@
         );
 
 
-        /* =========================
-           CONNECT
-        ========================= */
-
         oscillator.connect(
           gain
         );
@@ -770,10 +819,6 @@
           audioContext.destination
         );
 
-
-        /* =========================
-           PLAY
-        ========================= */
 
         oscillator.start();
 
@@ -842,24 +887,11 @@
       "click",
       () => {
 
-
-        /* =========================
-           SOFT POP
-        ========================= */
-
         playPop();
 
 
-        /* =========================
-           NEXT MESSAGE
-        ========================= */
-
         current++;
 
-
-        /* =========================
-           FINISH
-        ========================= */
 
         if (
           current >= messages.length
@@ -879,10 +911,6 @@
         }
 
 
-        /* =========================
-           SHOW NEXT
-        ========================= */
-
         showMessage();
 
       }
@@ -896,11 +924,6 @@
     continueButton.addEventListener(
       "click",
       () => {
-
-        /*
-          Sedikit suara juga ketika
-          Continue ditekan.
-        */
 
         playPop();
 
