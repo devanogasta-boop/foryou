@@ -482,22 +482,19 @@
 
   <!-- =========================
        BACKGROUND MUSIC
-  ========================= -->
+    ========================= -->
 
   <audio
     id="backgroundMusic"
     src="You Da One Rihanna.mp3"
     preload="auto"
-    loop
   ></audio>
 
 
   <main class="screen">
 
 
-    <!-- =========================
-         FLOATING STARS
-    ========================= -->
+    <!-- FLOATING STARS -->
 
     <div class="star">✦</div>
 
@@ -511,9 +508,7 @@
     <div class="content">
 
 
-      <!-- =========================
-           NORMAL SCREEN
-      ========================= -->
+      <!-- NORMAL SCREEN -->
 
       <div id="normalContent">
 
@@ -563,15 +558,12 @@
       </div>
 
 
-      <!-- =========================
-           FINISH SCREEN
-      ========================= -->
+      <!-- FINISH SCREEN -->
 
       <div
         class="finish"
         id="finish"
       >
-
 
         <div class="small-title">
           and there's more...
@@ -619,18 +611,48 @@
       );
 
 
-    /*
-      Volume dibuat lembut
-      supaya tidak terlalu keras.
-    */
-
     backgroundMusic.volume = 0.45;
 
 
+    /* =========================
+       MUSIC POSITION
+    ========================= */
+
+    const savedTime =
+      sessionStorage.getItem(
+        "rihannaMusicTime"
+      );
+
+
     /*
-      Coba lanjutkan lagu ketika
-      halaman messages dibuka.
+      Kalau sebelumnya belum pernah
+      masuk Messages, lagu mulai dari 0.
+
+      Kalau sudah ada posisi tersimpan,
+      lagu lanjut dari posisi tersebut.
     */
+
+    if (savedTime !== null) {
+
+      backgroundMusic.addEventListener(
+        "loadedmetadata",
+        () => {
+
+          backgroundMusic.currentTime =
+            parseFloat(savedTime);
+
+        },
+        {
+          once: true
+        }
+      );
+
+    }
+
+
+    /* =========================
+       START MUSIC
+    ========================= */
 
     function startMusic() {
 
@@ -638,8 +660,8 @@
         .catch(() => {
 
           /*
-            Browser mungkin menolak
-            autoplay sampai ada interaksi.
+            Browser mungkin memblokir
+            autoplay.
           */
 
         });
@@ -647,17 +669,13 @@
     }
 
 
-    /*
-      Coba langsung memainkan lagu.
-    */
-
     startMusic();
 
 
     /*
       Kalau autoplay diblokir,
-      klik pertama pada halaman
-      akan memulai lagu.
+      interaksi pertama akan
+      menjalankan lagu.
     */
 
     document.addEventListener(
@@ -677,6 +695,49 @@
       {
         once: true
       }
+    );
+
+
+    /* =========================
+       SAVE MUSIC POSITION
+    ========================= */
+
+    function saveMusicPosition() {
+
+      if (
+        !isNaN(
+          backgroundMusic.currentTime
+        )
+      ) {
+
+        sessionStorage.setItem(
+          "rihannaMusicTime",
+          backgroundMusic.currentTime
+        );
+
+      }
+
+    }
+
+
+    /*
+      Simpan posisi setiap 500ms.
+    */
+
+    setInterval(
+      saveMusicPosition,
+      500
+    );
+
+
+    /*
+      Simpan juga ketika halaman
+      akan ditinggalkan.
+    */
+
+    window.addEventListener(
+      "pagehide",
+      saveMusicPosition
     );
 
 
@@ -926,6 +987,14 @@
       () => {
 
         playPop();
+
+
+        /*
+          Simpan posisi tepat sebelum
+          pindah halaman.
+        */
+
+        saveMusicPosition();
 
 
         setTimeout(
