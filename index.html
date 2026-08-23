@@ -22,7 +22,7 @@
     }
 
     body {
-      background: #fff4f8;
+      background: #6eb9df;
       font-family: Georgia, serif;
     }
 
@@ -45,10 +45,48 @@
 
       background:
         radial-gradient(
-          circle at center,
-          #fffafd 0%,
-          #f8dce8 100%
+          circle at 50% 35%,
+          #e8f9ff 0%,
+          #b8e8fa 25%,
+          #8bd0ee 50%,
+          #64aed4 75%,
+          #4789b7 100%
         );
+    }
+
+
+    /* =========================
+       SOFT LIGHT
+    ========================= */
+
+    .opening::before {
+
+      content: "";
+
+      position: absolute;
+
+      width: 75vw;
+      height: 75vw;
+
+      max-width: 650px;
+      max-height: 650px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255, 255, 255, 0.22);
+
+      filter: blur(70px);
+
+      top: 50%;
+      left: 50%;
+
+      transform:
+        translate(-50%, -50%);
+
+      pointer-events: none;
+
+      z-index: 1;
     }
 
 
@@ -57,11 +95,14 @@
     ========================= */
 
     .content {
+
       position: relative;
 
       z-index: 100;
 
       text-align: center;
+
+      padding: 20px;
 
       transition:
         opacity 0.7s ease,
@@ -70,6 +111,7 @@
 
 
     .content.hide {
+
       opacity: 0;
 
       transform:
@@ -79,22 +121,45 @@
     }
 
 
+    /* =========================
+       TITLE
+    ========================= */
+
     h1 {
-      color: #7d4058;
+
+      color: white;
 
       font-size:
-        clamp(38px, 9vw, 62px);
+        clamp(40px, 10vw, 68px);
 
-      margin-bottom: 12px;
+      font-weight: normal;
+
+      letter-spacing: 1px;
+
+      margin-bottom: 14px;
+
+      text-shadow:
+        0 4px 20px
+        rgba(30, 90, 130, 0.25);
     }
 
 
+    /* =========================
+       SUBTITLE
+    ========================= */
+
     p {
-      color: #986579;
+
+      color:
+        rgba(255, 255, 255, 0.92);
 
       font-size: 17px;
 
-      margin-bottom: 30px;
+      margin-bottom: 32px;
+
+      text-shadow:
+        0 2px 10px
+        rgba(30, 90, 130, 0.2);
     }
 
 
@@ -103,6 +168,7 @@
     ========================= */
 
     button {
+
       border: none;
 
       outline: none;
@@ -112,9 +178,10 @@
 
       border-radius: 50px;
 
-      background: #9b5872;
+      background:
+        rgba(255, 255, 255, 0.95);
 
-      color: white;
+      color: #4b8fbd;
 
       font-family: Georgia, serif;
 
@@ -124,20 +191,27 @@
 
       box-shadow:
         0 10px 30px
-        rgba(100, 40, 70, 0.25);
+        rgba(35, 100, 140, 0.25);
 
       transition:
-        transform 0.3s ease;
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
     }
 
 
     button:hover {
+
       transform:
         scale(1.08);
+
+      box-shadow:
+        0 15px 35px
+        rgba(35, 100, 140, 0.35);
     }
 
 
     button:active {
+
       transform:
         scale(0.95);
     }
@@ -168,12 +242,8 @@
 
       z-index: 50;
 
-      transform-origin: center center;
-
-      /*
-        Membantu gambar bunga
-        menyatu dengan background.
-      */
+      transform-origin:
+        center center;
 
       mix-blend-mode: multiply;
 
@@ -447,14 +517,19 @@
     @media (max-width: 600px) {
 
       h1 {
-        font-size: 40px;
+
+        font-size: 42px;
       }
 
+
       p {
+
         font-size: 15px;
       }
 
+
       button {
+
         padding:
           14px 28px;
       }
@@ -558,11 +633,6 @@
       flower.classList.add("flower");
 
 
-      /*
-        Pilih warna bunga
-        secara random.
-      */
-
       flower.src =
         flowerImages[
           Math.floor(
@@ -573,10 +643,7 @@
 
 
       /*
-        Ukuran bunga.
-
-        Dibuat cukup besar
-        untuk memenuhi layar HP.
+        Bunga besar.
       */
 
       const size =
@@ -591,10 +658,7 @@
 
 
       /*
-        Posisi akhir.
-
-        Bunga akan menyebar
-        ke seluruh layar.
+        Menyebar ke seluruh layar.
       */
 
       const x =
@@ -622,7 +686,7 @@
 
 
       /*
-        Scale random.
+        Ukuran random.
       */
 
       const scale =
@@ -637,10 +701,7 @@
 
 
       /*
-        Rotation random.
-
-        Bisa berputar
-        beberapa kali.
+        Putaran random.
       */
 
       const rotation =
@@ -655,10 +716,7 @@
 
 
       /*
-        Durasi random.
-
-        Biar bunga tidak
-        bergerak bersamaan.
+        Kecepatan random.
       */
 
       const duration =
@@ -671,10 +729,6 @@
         duration + "s"
       );
 
-
-      /*
-        Delay random sedikit.
-      */
 
       flower.style.animationDelay =
         Math.random() * 0.35
@@ -710,8 +764,7 @@
 
 
       /*
-        Hilangkan tulisan
-        dan tombol.
+        Hilangkan opening.
       */
 
       content.classList.add(
@@ -744,7 +797,7 @@
 
 
       /*
-        Mulai spray.
+        SPRAY!
       */
 
       requestAnimationFrame(
@@ -765,9 +818,7 @@
 
 
       /*
-        Setelah spray,
-        masuk ke momen
-        layar penuh bunga.
+        FULL SCREEN MOMENT
       */
 
       setTimeout(
@@ -794,9 +845,7 @@
 
 
       /*
-        Setelah itu bunga
-        terbang ke kiri
-        dan kanan.
+        SPLIT LEFT & RIGHT
       */
 
       setTimeout(
@@ -840,8 +889,7 @@
 
 
       /*
-        Setelah animasi selesai,
-        buka letters.html.
+        GO TO LETTERS PAGE
       */
 
       setTimeout(
@@ -858,7 +906,7 @@
 
 
     /* =========================
-       BUTTON EVENT
+       BUTTON
     ========================= */
 
     startButton.addEventListener(
