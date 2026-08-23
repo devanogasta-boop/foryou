@@ -24,8 +24,10 @@
 
     html,
     body {
+
       width: 100%;
       height: 100%;
+
       overflow: hidden;
     }
 
@@ -44,17 +46,6 @@
         );
 
       color: white;
-    }
-
-
-    /* =========================
-       BACKGROUND MUSIC
-    ========================= */
-
-    #backgroundMusic {
-
-      display: none;
-
     }
 
 
@@ -684,7 +675,7 @@
 
 
   <!-- =========================
-       BACKGROUND MUSIC
+       RIHANNA MUSIC
   ========================= -->
 
   <audio
@@ -853,10 +844,6 @@
         </p>
 
 
-        <!-- =====================
-             FINAL MESSAGE
-        ====================== -->
-
         <div class="signature">
 
           With all my heart,
@@ -889,9 +876,9 @@
   <script>
 
 
-    /* =========================
+    /* =====================================================
        BACKGROUND MUSIC
-    ========================= */
+    ===================================================== */
 
     const backgroundMusic =
       document.getElementById(
@@ -902,37 +889,69 @@
     backgroundMusic.volume = 0.45;
 
 
-    /* =========================
+    /* =====================================================
        RESTORE MUSIC POSITION
-    ========================= */
+    ===================================================== */
 
     const savedTime =
-      localStorage.getItem(
-        "musicTime"
+      sessionStorage.getItem(
+        "rihannaMusicTime"
       );
 
 
-    if (savedTime !== null) {
+    if (
+      savedTime !== null
+    ) {
 
-      backgroundMusic.currentTime =
-        parseFloat(savedTime);
+      backgroundMusic.addEventListener(
+        "loadedmetadata",
+        () => {
+
+          const time =
+            parseFloat(
+              savedTime
+            );
+
+
+          if (
+            !isNaN(time) &&
+            time >= 0 &&
+            time < backgroundMusic.duration
+          ) {
+
+            backgroundMusic.currentTime =
+              time;
+
+          }
+
+        },
+        {
+          once: true
+        }
+      );
 
     }
 
 
-    /* =========================
+    /* =====================================================
        START MUSIC
-    ========================= */
+    ===================================================== */
 
     function startMusic() {
 
       backgroundMusic.play()
+        .then(() => {
+
+          console.log(
+            "Rihanna music continued."
+          );
+
+        })
         .catch(() => {
 
-          /*
-            Browser mungkin memblokir
-            autoplay.
-          */
+          console.log(
+            "Autoplay blocked."
+          );
 
         });
 
@@ -942,33 +961,75 @@
     startMusic();
 
 
-    /* =========================
+    /* =====================================================
        AUTOPLAY FALLBACK
-    ========================= */
+    ===================================================== */
+
+    function unlockMusic() {
+
+      if (
+        backgroundMusic.paused
+      ) {
+
+        backgroundMusic.play()
+          .catch(() => {});
+
+      }
+
+    }
+
+
+    /*
+      Kalau browser memblokir autoplay,
+      klik/tap pertama akan menyalakan lagu.
+    */
 
     document.addEventListener(
-      "click",
-      () => {
-
-        if (
-          backgroundMusic.paused
-        ) {
-
-          backgroundMusic.play()
-            .catch(() => {});
-
-        }
-
-      },
+      "pointerdown",
+      unlockMusic,
       {
         once: true
       }
     );
 
 
-    /* =========================
+    /* =====================================================
+       SAVE POSITION
+    ===================================================== */
+
+    function saveMusicPosition() {
+
+      if (
+        !isNaN(
+          backgroundMusic.currentTime
+        )
+      ) {
+
+        sessionStorage.setItem(
+          "rihannaMusicTime",
+          backgroundMusic.currentTime
+        );
+
+      }
+
+    }
+
+
+    setInterval(
+      saveMusicPosition,
+      500
+    );
+
+
+    window.addEventListener(
+      "pagehide",
+      saveMusicPosition
+    );
+
+
+    /* =====================================================
        ELEMENTS
-    ========================= */
+    ===================================================== */
 
     const envelope =
       document.getElementById(
@@ -994,13 +1055,20 @@
       );
 
 
-    /* =========================
+    /* =====================================================
        OPEN LETTER
-    ========================= */
+    ===================================================== */
 
     openButton.addEventListener(
       "click",
       () => {
+
+        /*
+          Kalau musik masih paused,
+          tombol ini juga mengaktifkannya.
+        */
+
+        unlockMusic();
 
 
         envelope.classList.add(
@@ -1015,7 +1083,6 @@
         setTimeout(
           () => {
 
-
             envelopeScreen.style.display =
               "none";
 
@@ -1024,40 +1091,11 @@
               "show"
             );
 
-
           },
           1300
         );
 
       }
-    );
-
-
-    /* =========================
-       KEEP MUSIC POSITION UPDATED
-    ========================= */
-
-    setInterval(
-      () => {
-
-        try {
-
-          localStorage.setItem(
-            "musicTime",
-            backgroundMusic.currentTime
-          );
-
-        } catch (error) {
-
-          console.log(
-            "Unable to save music position:",
-            error
-          );
-
-        }
-
-      },
-      1000
     );
 
 
