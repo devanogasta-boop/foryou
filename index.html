@@ -24,14 +24,18 @@
 
     html,
     body {
+
       width: 100%;
       height: 100%;
+
       overflow: hidden;
     }
 
 
     body {
+
       background: #061525;
+
       font-family: Georgia, serif;
     }
 
@@ -50,6 +54,7 @@
       overflow: hidden;
 
       display: flex;
+
       justify-content: center;
       align-items: center;
 
@@ -65,7 +70,7 @@
 
 
     /* =========================
-       SOFT BLUE LIGHT
+       BLUE GLOW
     ========================= */
 
     .opening::before {
@@ -83,9 +88,9 @@
       border-radius: 50%;
 
       background:
-        rgba(55, 160, 220, 0.16);
+        rgba(55, 160, 220, 0.18);
 
-      filter: blur(80px);
+      filter: blur(75px);
 
       top: 50%;
       left: 50%;
@@ -160,7 +165,7 @@
     p {
 
       color:
-        rgba(225, 245, 255, 0.9);
+        rgba(235, 250, 255, 0.92);
 
       font-size: 17px;
 
@@ -168,12 +173,12 @@
 
       text-shadow:
         0 2px 10px
-        rgba(0, 0, 0, 0.2);
+        rgba(0, 0, 0, 0.25);
     }
 
 
     /* =========================
-       BUTTON
+       BEGIN BUTTON
     ========================= */
 
     button {
@@ -188,7 +193,7 @@
       border-radius: 50px;
 
       background:
-        rgba(255, 255, 255, 0.96);
+        #dff8ff;
 
       color:
         #16476a;
@@ -201,7 +206,7 @@
 
       box-shadow:
         0 10px 30px
-        rgba(20, 100, 150, 0.3);
+        rgba(60, 180, 255, 0.25);
 
       transition:
         transform 0.3s ease,
@@ -216,14 +221,14 @@
 
       box-shadow:
         0 15px 35px
-        rgba(20, 120, 180, 0.4);
+        rgba(60, 180, 255, 0.4);
     }
 
 
     button:active {
 
       transform:
-        scale(0.95);
+        scale(0.94);
     }
 
 
@@ -255,7 +260,33 @@
       transform-origin:
         center center;
 
-      mix-blend-mode: multiply;
+
+      /*
+        WARNA BUNGA DIBUAT
+        LEBIH TERANG DAN PEKAT
+      */
+
+      filter:
+        brightness(1.4)
+        saturate(1.6)
+        contrast(1.15)
+        drop-shadow(
+          0 0 12px
+          rgba(255, 255, 255, 0.4)
+        );
+
+
+      /*
+        PENTING:
+        jangan gunakan multiply
+        supaya warna bunga
+        tidak menyatu dengan
+        background biru.
+      */
+
+      mix-blend-mode:
+        normal;
+
 
       transform:
         translate(-50%, -50%)
@@ -560,8 +591,6 @@
   >
 
 
-    <!-- CENTER CONTENT -->
-
     <div
       class="content"
       id="content"
@@ -586,8 +615,6 @@
     </div>
 
 
-    <!-- FLASH -->
-
     <div
       class="flash"
       id="flash"
@@ -595,6 +622,23 @@
 
 
   </main>
+
+
+  <!--
+    SOUND POP
+    Pakai nama file audio yang
+    SUDAH berhasil di kode kamu.
+    
+    Kalau kode kamu sekarang sudah
+    punya bagian audio sendiri,
+    pertahankan nama file tersebut.
+  -->
+
+  <audio
+    id="popSound"
+    src="click.mp3"
+    preload="auto"
+  ></audio>
 
 
   <script>
@@ -628,6 +672,12 @@
       );
 
 
+    const popSound =
+      document.getElementById(
+        "popSound"
+      );
+
+
     let started = false;
 
 
@@ -644,98 +694,6 @@
       "blue flower.png"
 
     ];
-
-
-    /* =========================
-       POP SOUND
-    ========================= */
-
-    function playBeginSound() {
-
-      const AudioContext =
-        window.AudioContext ||
-        window.webkitAudioContext;
-
-
-      if (!AudioContext) {
-
-        return;
-
-      }
-
-
-      const audioContext =
-        new AudioContext();
-
-
-      const oscillator =
-        audioContext.createOscillator();
-
-
-      const gain =
-        audioContext.createGain();
-
-
-      /*
-        POP SOUND
-      */
-
-      oscillator.type =
-        "sine";
-
-
-      oscillator.frequency.setValueAtTime(
-        240,
-        audioContext.currentTime
-      );
-
-
-      oscillator.frequency.exponentialRampToValueAtTime(
-        75,
-        audioContext.currentTime + 0.18
-      );
-
-
-      /*
-        VOLUME
-      */
-
-      gain.gain.setValueAtTime(
-        0.0001,
-        audioContext.currentTime
-      );
-
-
-      gain.gain.exponentialRampToValueAtTime(
-        0.9,
-        audioContext.currentTime + 0.015
-      );
-
-
-      gain.gain.exponentialRampToValueAtTime(
-        0.0001,
-        audioContext.currentTime + 0.22
-      );
-
-
-      oscillator.connect(
-        gain
-      );
-
-
-      gain.connect(
-        audioContext.destination
-      );
-
-
-      oscillator.start();
-
-
-      oscillator.stop(
-        audioContext.currentTime + 0.22
-      );
-
-    }
 
 
     /* =========================
@@ -764,9 +722,7 @@
         ];
 
 
-      /*
-        BUNGA BESAR
-      */
+      /* SIZE */
 
       const size =
         110 +
@@ -779,9 +735,7 @@
       );
 
 
-      /*
-        POSISI AKHIR
-      */
+      /* POSITION */
 
       const x =
         (Math.random() - 0.5)
@@ -807,9 +761,7 @@
       );
 
 
-      /*
-        RANDOM SCALE
-      */
+      /* SCALE */
 
       const scale =
         0.7 +
@@ -822,9 +774,7 @@
       );
 
 
-      /*
-        RANDOM ROTATION
-      */
+      /* ROTATION */
 
       const rotation =
         (Math.random() - 0.5)
@@ -837,9 +787,7 @@
       );
 
 
-      /*
-        RANDOM SPEED
-      */
+      /* DURATION */
 
       const duration =
         1.7 +
@@ -867,7 +815,6 @@
 
 
       return flower;
-
     }
 
 
@@ -881,16 +828,31 @@
       if (started) {
 
         return;
-
       }
 
 
       started = true;
 
 
-      /*
-        HILANGKAN TEXT
-      */
+      /* =========================
+         POP SOUND
+      ========================= */
+
+      popSound.currentTime = 0;
+
+      popSound.volume = 1.0;
+
+      popSound.play()
+        .catch(() => {
+
+          /* Ignore browser audio error */
+
+        });
+
+
+      /* =========================
+         HIDE CONTENT
+      ========================= */
 
       content.classList.add(
         "hide"
@@ -900,9 +862,9 @@
       const flowers = [];
 
 
-      /*
-        CREATE 70 FLOWERS
-      */
+      /* =========================
+         CREATE 70 FLOWERS
+      ========================= */
 
       for (
         let i = 0;
@@ -921,9 +883,9 @@
       }
 
 
-      /*
-        SPRAY
-      */
+      /* =========================
+         SPRAY
+      ========================= */
 
       requestAnimationFrame(
         () => {
@@ -942,9 +904,9 @@
       );
 
 
-      /*
-        FULL SCREEN
-      */
+      /* =========================
+         FULL SCREEN
+      ========================= */
 
       setTimeout(
         () => {
@@ -969,9 +931,9 @@
       );
 
 
-      /*
-        SPLIT LEFT & RIGHT
-      */
+      /* =========================
+         SPLIT
+      ========================= */
 
       setTimeout(
         () => {
@@ -1013,9 +975,9 @@
       );
 
 
-      /*
-        GO TO GAME
-      */
+      /* =========================
+         GO TO GAME
+      ========================= */
 
       setTimeout(
         () => {
@@ -1031,27 +993,12 @@
 
 
     /* =========================
-       BEGIN BUTTON
+       BUTTON
     ========================= */
 
     startButton.addEventListener(
       "click",
-      () => {
-
-        /*
-          🔊 POP!
-        */
-
-        playBeginSound();
-
-
-        /*
-          🌸 FLOWER ANIMATION
-        */
-
-        startFlowerShow();
-
-      }
+      startFlowerShow
     );
 
 
