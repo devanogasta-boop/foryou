@@ -743,6 +743,107 @@
 
 
     /* =========================
+       BUTTON / HEART SOUND
+    ========================= */
+
+    let audioContext = null;
+
+
+    function playSound(
+      frequency = 700,
+      duration = 0.15
+    ) {
+
+      try {
+
+        if (!audioContext) {
+
+          audioContext =
+            new (
+              window.AudioContext ||
+              window.webkitAudioContext
+            )();
+
+        }
+
+
+        if (
+          audioContext.state ===
+          "suspended"
+        ) {
+
+          audioContext.resume();
+
+        }
+
+
+        const oscillator =
+          audioContext.createOscillator();
+
+
+        const gain =
+          audioContext.createGain();
+
+
+        oscillator.type =
+          "sine";
+
+
+        oscillator.frequency.setValueAtTime(
+          frequency,
+          audioContext.currentTime
+        );
+
+
+        oscillator.frequency.exponentialRampToValueAtTime(
+          frequency * 1.35,
+          audioContext.currentTime + duration
+        );
+
+
+        gain.gain.setValueAtTime(
+          0.12,
+          audioContext.currentTime
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.001,
+          audioContext.currentTime + duration
+        );
+
+
+        oscillator.connect(
+          gain
+        );
+
+
+        gain.connect(
+          audioContext.destination
+        );
+
+
+        oscillator.start();
+
+
+        oscillator.stop(
+          audioContext.currentTime +
+          duration
+        );
+
+      } catch (error) {
+
+        console.log(
+          "Sound unavailable:",
+          error
+        );
+
+      }
+
+    }
+
+
+    /* =========================
        RANDOM POSITION
     ========================= */
 
@@ -843,6 +944,16 @@
 
         return;
       }
+
+
+      /*
+        Sound saat heart disentuh.
+      */
+
+      playSound(
+        700 + Math.random() * 180,
+        0.13
+      );
 
 
       score++;
@@ -948,6 +1059,15 @@
             "show"
           );
 
+          /*
+            Sound saat pesan selesai muncul.
+          */
+
+          playSound(
+            850,
+            0.25
+          );
+
         },
         500
       );
@@ -963,15 +1083,37 @@
 
 
     /* =========================
-       CONTINUE
+       CONTINUE BUTTON
     ========================= */
 
     continueButton.addEventListener(
       "click",
       () => {
 
-        window.location.href =
-          "messages.html";
+        /*
+          Sound tombol Continue.
+        */
+
+        playSound(
+          900,
+          0.16
+        );
+
+
+        /*
+          Beri waktu sebentar
+          supaya suara terdengar.
+        */
+
+        setTimeout(
+          () => {
+
+            window.location.href =
+              "messages.html";
+
+          },
+          170
+        );
 
       }
     );
