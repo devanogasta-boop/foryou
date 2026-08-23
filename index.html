@@ -7,6 +7,7 @@
   <title>For You ♡</title>
 
   <style>
+
     * {
       margin: 0;
       padding: 0;
@@ -25,14 +26,17 @@
       font-family: Georgia, serif;
     }
 
+
     /* =========================
        OPENING SCREEN
     ========================= */
 
     .opening {
       position: relative;
+
       width: 100vw;
       height: 100vh;
+
       overflow: hidden;
 
       display: flex;
@@ -40,11 +44,21 @@
       align-items: center;
 
       background:
-        radial-gradient(circle at center, #fffafd, #f8dce8);
+        radial-gradient(
+          circle at center,
+          #fffafd 0%,
+          #f8dce8 100%
+        );
     }
+
+
+    /* =========================
+       CENTER CONTENT
+    ========================= */
 
     .content {
       position: relative;
+
       z-index: 100;
 
       text-align: center;
@@ -54,67 +68,97 @@
         transform 0.7s ease;
     }
 
+
     .content.hide {
       opacity: 0;
-      transform: scale(0.8);
+
+      transform:
+        scale(0.75);
+
       pointer-events: none;
     }
 
+
     h1 {
       color: #7d4058;
-      font-size: clamp(38px, 9vw, 62px);
+
+      font-size:
+        clamp(38px, 9vw, 62px);
+
       margin-bottom: 12px;
     }
 
+
     p {
       color: #986579;
+
       font-size: 17px;
+
       margin-bottom: 30px;
     }
 
+
+    /* =========================
+       BUTTON
+    ========================= */
+
     button {
       border: none;
+
       outline: none;
 
-      padding: 15px 34px;
+      padding:
+        15px 34px;
 
       border-radius: 50px;
 
       background: #9b5872;
+
       color: white;
 
       font-family: Georgia, serif;
+
       font-size: 16px;
 
       cursor: pointer;
 
       box-shadow:
-        0 10px 30px rgba(100, 40, 70, 0.25);
+        0 10px 30px
+        rgba(100, 40, 70, 0.25);
 
-      transition: 0.3s;
+      transition:
+        transform 0.3s ease;
     }
+
 
     button:hover {
-      transform: scale(1.08);
+      transform:
+        scale(1.08);
     }
 
+
     button:active {
-      transform: scale(0.95);
+      transform:
+        scale(0.95);
     }
 
 
     /* =========================
-       FLOWER SPRAY
+       FLOWERS
     ========================= */
 
     .flower {
+
       position: absolute;
 
       left: 50%;
       top: 50%;
 
-      width: var(--size);
-      height: var(--size);
+      width:
+        var(--size);
+
+      height:
+        var(--size);
 
       object-fit: contain;
 
@@ -124,10 +168,13 @@
 
       z-index: 50;
 
+      transform-origin: center center;
+
       /*
-        Black background pada gambar
-        dibuat menyatu dengan layar.
+        Membantu gambar bunga
+        menyatu dengan background.
       */
+
       mix-blend-mode: multiply;
 
       transform:
@@ -136,15 +183,25 @@
         rotate(0deg);
     }
 
-    /* Spray keluar */
+
+    /* =========================
+       FLOWER SPRAY
+    ========================= */
 
     .flower.spray {
-      animation: flowerSpray var(--duration) cubic-bezier(.15,.75,.25,1) forwards;
+
+      animation:
+        flowerSpray
+        var(--duration)
+        cubic-bezier(.15, .75, .25, 1)
+        forwards;
     }
+
 
     @keyframes flowerSpray {
 
       0% {
+
         opacity: 0;
 
         transform:
@@ -153,11 +210,15 @@
           rotate(0deg);
       }
 
-      10% {
+
+      12% {
+
         opacity: 1;
       }
 
+
       100% {
+
         opacity: 1;
 
         transform:
@@ -176,13 +237,21 @@
     ========================= */
 
     .flower.full {
+
       animation:
-        flowerPulse 0.8s ease forwards;
+        flowerPulse
+        0.8s
+        ease-in-out
+        forwards;
     }
+
 
     @keyframes flowerPulse {
 
       0% {
+
+        opacity: 1;
+
         transform:
           translate(
             calc(-50% + var(--x)),
@@ -191,44 +260,61 @@
           scale(var(--scale))
           rotate(var(--rotation));
       }
+
 
       50% {
+
+        opacity: 1;
+
         transform:
           translate(
             calc(-50% + var(--x)),
             calc(-50% + var(--y))
           )
-          scale(calc(var(--scale) * 1.3))
-          rotate(calc(var(--rotation) + 15deg));
+          scale(
+            calc(var(--scale) * 1.35)
+          )
+          rotate(
+            calc(var(--rotation) + 20deg)
+          );
       }
 
+
       100% {
+
+        opacity: 1;
+
         transform:
           translate(
             calc(-50% + var(--x)),
             calc(-50% + var(--y))
           )
           scale(var(--scale))
-          rotate(var(--rotation));
+          rotate(
+            calc(var(--rotation) + 40deg)
+          );
       }
     }
 
 
     /* =========================
-       FLOWERS SPLIT
+       SPLIT LEFT
     ========================= */
 
     .flower.split-left {
-      animation: splitLeft 1.4s cubic-bezier(.7,0,.2,1) forwards;
+
+      animation:
+        splitLeft
+        1.4s
+        cubic-bezier(.7, 0, .2, 1)
+        forwards;
     }
 
-    .flower.split-right {
-      animation: splitRight 1.4s cubic-bezier(.7,0,.2,1) forwards;
-    }
 
     @keyframes splitLeft {
 
       0% {
+
         opacity: 1;
 
         transform:
@@ -237,55 +323,84 @@
             calc(-50% + var(--y))
           )
           scale(var(--scale))
-          rotate(var(--rotation));
+          rotate(
+            calc(var(--rotation) + 40deg)
+          );
       }
 
+
       100% {
+
         opacity: 0;
 
         transform:
           translate(
-            calc(-50% + var(--x) - 100vw),
-            calc(-50% + var(--y) + 20vh)
+            calc(-50% + var(--x) - 110vw),
+            calc(-50% + var(--y) + 15vh)
           )
-          scale(0.7)
-          rotate(-180deg);
-      }
-    }
-
-    @keyframes splitRight {
-
-      0% {
-        opacity: 1;
-
-        transform:
-          translate(
-            calc(-50% + var(--x)),
-            calc(-50% + var(--y))
-          )
-          scale(var(--scale))
-          rotate(var(--rotation));
-      }
-
-      100% {
-        opacity: 0;
-
-        transform:
-          translate(
-            calc(-50% + var(--x) + 100vw),
-            calc(-50% + var(--y) - 20vh)
-          )
-          scale(0.7)
-          rotate(180deg);
+          scale(0.65)
+          rotate(
+            calc(var(--rotation) - 360deg)
+          );
       }
     }
 
 
     /* =========================
-       SCREEN FLASH
+       SPLIT RIGHT
+    ========================= */
+
+    .flower.split-right {
+
+      animation:
+        splitRight
+        1.4s
+        cubic-bezier(.7, 0, .2, 1)
+        forwards;
+    }
+
+
+    @keyframes splitRight {
+
+      0% {
+
+        opacity: 1;
+
+        transform:
+          translate(
+            calc(-50% + var(--x)),
+            calc(-50% + var(--y))
+          )
+          scale(var(--scale))
+          rotate(
+            calc(var(--rotation) + 40deg)
+          );
+      }
+
+
+      100% {
+
+        opacity: 0;
+
+        transform:
+          translate(
+            calc(-50% + var(--x) + 110vw),
+            calc(-50% + var(--y) - 15vh)
+          )
+          scale(0.65)
+          rotate(
+            calc(var(--rotation) + 360deg)
+          );
+      }
+    }
+
+
+    /* =========================
+       WHITE FLASH
     ========================= */
 
     .flash {
+
       position: fixed;
 
       inset: 0;
@@ -299,9 +414,15 @@
       z-index: 200;
     }
 
+
     .flash.active {
-      animation: flashEffect 0.8s ease;
+
+      animation:
+        flashEffect
+        0.8s
+        ease;
     }
+
 
     @keyframes flashEffect {
 
@@ -334,8 +455,10 @@
       }
 
       button {
-        padding: 14px 28px;
+        padding:
+          14px 28px;
       }
+
     }
 
   </style>
@@ -344,33 +467,65 @@
 
 <body>
 
-  <main class="opening" id="opening">
 
-    <div class="content" id="content">
+  <main
+    class="opening"
+    id="opening"
+  >
 
-      <h1>For You ♡</h1>
+
+    <div
+      class="content"
+      id="content"
+    >
+
+      <h1>
+        For You ♡
+      </h1>
+
 
       <p>
         A little place made just for you.
       </p>
 
-      <button id="startButton">
+
+      <button
+        id="startButton"
+      >
         Tap to Begin ♡
       </button>
 
     </div>
 
-    <div class="flash" id="flash"></div>
+
+    <div
+      class="flash"
+      id="flash"
+    ></div>
+
 
   </main>
 
 
   <script>
 
-    const opening = document.getElementById("opening");
-    const content = document.getElementById("content");
-    const startButton = document.getElementById("startButton");
-    const flash = document.getElementById("flash");
+
+    /* =========================
+       ELEMENTS
+    ========================= */
+
+    const opening =
+      document.getElementById("opening");
+
+    const content =
+      document.getElementById("content");
+
+    const startButton =
+      document.getElementById("startButton");
+
+    const flash =
+      document.getElementById("flash");
+
 
     let started = false;
 
@@ -382,7 +537,9 @@
     const flowerImages = [
 
       "pink flower.png",
+
       "yellow flower.png",
+
       "blue flower.png"
 
     ];
@@ -394,22 +551,38 @@
 
     function createFlower(index) {
 
-      const flower = document.createElement("img");
+      const flower =
+        document.createElement("img");
+
 
       flower.classList.add("flower");
 
+
+      /*
+        Pilih warna bunga
+        secara random.
+      */
+
       flower.src =
         flowerImages[
-          Math.floor(Math.random() * flowerImages.length)
+          Math.floor(
+            Math.random()
+            * flowerImages.length
+          )
         ];
 
 
       /*
-        Ukuran bunga dibuat random
+        Ukuran bunga.
+
+        Dibuat cukup besar
+        untuk memenuhi layar HP.
       */
 
       const size =
-        80 + Math.random() * 180;
+        110 +
+        Math.random() * 170;
+
 
       flower.style.setProperty(
         "--size",
@@ -418,22 +591,29 @@
 
 
       /*
-        Posisi akhir spray.
-        Dibuat sangat luas supaya
-        bunga memenuhi layar.
+        Posisi akhir.
+
+        Bunga akan menyebar
+        ke seluruh layar.
       */
 
       const x =
-        (Math.random() - 0.5) * window.innerWidth * 1.8;
+        (Math.random() - 0.5)
+        * window.innerWidth
+        * 2.2;
+
 
       const y =
-        (Math.random() - 0.5) * window.innerHeight * 1.8;
+        (Math.random() - 0.5)
+        * window.innerHeight
+        * 2.2;
 
 
       flower.style.setProperty(
         "--x",
         x + "px"
       );
+
 
       flower.style.setProperty(
         "--y",
@@ -442,11 +622,13 @@
 
 
       /*
-        Random scale
+        Scale random.
       */
 
       const scale =
-        0.5 + Math.random() * 1.4;
+        0.7 +
+        Math.random() * 1.5;
+
 
       flower.style.setProperty(
         "--scale",
@@ -455,11 +637,16 @@
 
 
       /*
-        Random rotation
+        Rotation random.
+
+        Bisa berputar
+        beberapa kali.
       */
 
       const rotation =
-        (Math.random() - 0.5) * 720;
+        (Math.random() - 0.5)
+        * 1080;
+
 
       flower.style.setProperty(
         "--rotation",
@@ -468,11 +655,16 @@
 
 
       /*
-        Random animation speed
+        Durasi random.
+
+        Biar bunga tidak
+        bergerak bersamaan.
       */
 
       const duration =
-        1.5 + Math.random() * 1.5;
+        1.7 +
+        Math.random() * 1.2;
+
 
       flower.style.setProperty(
         "--duration",
@@ -480,14 +672,22 @@
       );
 
 
+      /*
+        Delay random sedikit.
+      */
+
       flower.style.animationDelay =
-        Math.random() * 0.5 + "s";
+        Math.random() * 0.35
+        + "s";
 
 
-      flower.dataset.index = index;
+      flower.dataset.index =
+        index;
 
 
-      opening.appendChild(flower);
+      opening.appendChild(
+        flower
+      );
 
 
       return flower;
@@ -495,119 +695,180 @@
 
 
     /* =========================
-       START FLOWER SPRAY
+       START FLOWER SHOW
     ========================= */
 
     function startFlowerShow() {
 
-      if (started) return;
+
+      if (started) {
+        return;
+      }
+
 
       started = true;
 
-      content.classList.add("hide");
+
+      /*
+        Hilangkan tulisan
+        dan tombol.
+      */
+
+      content.classList.add(
+        "hide"
+      );
 
 
       const flowers = [];
 
 
       /*
-        70 bunga!
+        70 bunga.
       */
 
-      for (let i = 0; i < 70; i++) {
+      for (
+        let i = 0;
+        i < 70;
+        i++
+      ) {
 
         const flower =
           createFlower(i);
 
-        flowers.push(flower);
+
+        flowers.push(
+          flower
+        );
 
       }
 
 
       /*
-        Mulai spray
+        Mulai spray.
       */
 
-      requestAnimationFrame(() => {
+      requestAnimationFrame(
+        () => {
 
-        flowers.forEach((flower) => {
+          flowers.forEach(
+            (flower) => {
 
-          flower.classList.add("spray");
+              flower.classList.add(
+                "spray"
+              );
 
-        });
+            }
+          );
 
-      });
+        }
+      );
 
 
       /*
-        Setelah bunga memenuhi layar,
-        buat efek pulse.
+        Setelah spray,
+        masuk ke momen
+        layar penuh bunga.
       */
 
-      setTimeout(() => {
+      setTimeout(
+        () => {
 
-        flowers.forEach((flower) => {
+          flowers.forEach(
+            (flower) => {
 
-          flower.classList.remove("spray");
+              flower.classList.remove(
+                "spray"
+              );
 
-          flower.classList.add("full");
 
-        });
+              flower.classList.add(
+                "full"
+              );
 
-      }, 2300);
+            }
+          );
+
+        },
+        2600
+      );
 
 
       /*
-        Setelah itu bunga pecah
-        ke kanan dan kiri.
+        Setelah itu bunga
+        terbang ke kiri
+        dan kanan.
       */
 
-      setTimeout(() => {
+      setTimeout(
+        () => {
 
-        flash.classList.add("active");
-
-
-        flowers.forEach((flower, index) => {
-
-          flower.classList.remove("full");
+          flash.classList.add(
+            "active"
+          );
 
 
-          if (index % 2 === 0) {
+          flowers.forEach(
+            (flower, index) => {
 
-            flower.classList.add("split-left");
+              flower.classList.remove(
+                "full"
+              );
 
-          } else {
 
-            flower.classList.add("split-right");
+              if (
+                index % 2 === 0
+              ) {
 
-          }
+                flower.classList.add(
+                  "split-left"
+                );
 
-        });
-        });
-      }, 4600);
+              } else {
+
+                flower.classList.add(
+                  "split-right"
+                );
+
+              }
+
+            }
+          );
+
+        },
+        4600
+      );
 
 
       /*
         Setelah animasi selesai,
-        pindah ke halaman letters.html
+        buka letters.html.
       */
 
-      setTimeout(() => {
+      setTimeout(
+        () => {
 
-        window.location.href = "letters.html";
+          window.location.href =
+            "letters.html";
 
-      }, 6200);
+        },
+        6200
+      );
 
     }
 
 
     /* =========================
-       BUTTON
+       BUTTON EVENT
     ========================= */
 
-    startButton.addEventListener("click", startFlowerShow);
+    startButton.addEventListener(
+      "click",
+      startFlowerShow
+    );
+
 
   </script>
+
 
 </body>
 </html>
