@@ -672,6 +672,18 @@
 <body>
 
 
+  <!-- =========================
+       RIHANNA BACKGROUND MUSIC
+  ========================= -->
+
+  <audio
+    id="backgroundMusic"
+    src="You%20Da%20One%20Rihanna.mp3"
+    preload="auto"
+    loop
+  ></audio>
+
+
   <main class="screen">
 
 
@@ -895,12 +907,36 @@
 
 
     /* =========================
+       BACKGROUND MUSIC
+    ========================= */
+
+    const backgroundMusic =
+      document.getElementById(
+        "backgroundMusic"
+      );
+
+
+    backgroundMusic.volume = 0.45;
+
+
+    /* =========================
        OPEN LETTER
     ========================= */
 
     openButton.addEventListener(
       "click",
       () => {
+
+
+        /*
+          Mulai lagu saat tombol
+          ditekan supaya browser HP
+          mengizinkan audio.
+        */
+
+        backgroundMusic.play().catch(
+          () => {}
+        );
 
 
         envelope.classList.add(
