@@ -304,7 +304,6 @@
       display: flex;
 
       justify-content: center;
-
       align-items: center;
 
       font-size: 48px;
@@ -440,7 +439,6 @@
       display: flex;
 
       justify-content: center;
-
       align-items: center;
 
       text-align: center;
@@ -706,6 +704,17 @@
   </main>
 
 
+  <!-- =========================
+       BACKGROUND MUSIC
+  ========================= -->
+
+  <audio
+    id="bgMusic"
+    src="You Da One Rihanna.mp3"
+    preload="auto"
+  ></audio>
+
+
   <script>
 
 
@@ -735,6 +744,56 @@
       document.getElementById(
         "continueButton"
       );
+
+
+    /* =========================
+       BACKGROUND MUSIC
+    ========================= */
+
+    const bgMusic =
+      document.getElementById(
+        "bgMusic"
+      );
+
+
+    const savedMusicTime =
+      parseFloat(
+        localStorage.getItem(
+          "musicTime"
+        )
+      ) || 0;
+
+
+    /*
+      Lanjutkan lagu dari posisi
+      terakhir di halaman bunga.
+    */
+
+    bgMusic.currentTime =
+      savedMusicTime;
+
+
+    /*
+      Volume lagu background.
+      Bisa diubah kalau terlalu
+      keras atau terlalu pelan.
+    */
+
+    bgMusic.volume = 0.45;
+
+
+    /*
+      Coba lanjutkan lagu.
+    */
+
+    bgMusic.play().catch(() => {
+
+      /*
+        Browser mungkin menunggu
+        interaksi pengguna.
+      */
+
+    });
 
 
     let score = 0;
@@ -1059,6 +1118,7 @@
             "show"
           );
 
+
           /*
             Sound saat pesan selesai muncul.
           */
@@ -1090,6 +1150,18 @@
       "click",
       () => {
 
+
+        /*
+          Simpan posisi lagu sebelum
+          pindah ke messages.html.
+        */
+
+        localStorage.setItem(
+          "musicTime",
+          bgMusic.currentTime
+        );
+
+
         /*
           Sound tombol Continue.
         */
@@ -1101,8 +1173,8 @@
 
 
         /*
-          Beri waktu sebentar
-          supaya suara terdengar.
+          Beri waktu sebentar supaya
+          suara tombol terdengar.
         */
 
         setTimeout(
