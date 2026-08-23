@@ -48,6 +48,17 @@
 
 
     /* =========================
+       BACKGROUND MUSIC
+    ========================= */
+
+    #backgroundMusic {
+
+      display: none;
+
+    }
+
+
+    /* =========================
        SCREEN
     ========================= */
 
@@ -672,6 +683,18 @@
 <body>
 
 
+  <!-- =========================
+       BACKGROUND MUSIC
+  ========================= -->
+
+  <audio
+    id="backgroundMusic"
+    src="You Da One Rihanna.mp3"
+    preload="auto"
+    loop
+  ></audio>
+
+
   <main class="screen">
 
 
@@ -867,6 +890,83 @@
 
 
     /* =========================
+       BACKGROUND MUSIC
+    ========================= */
+
+    const backgroundMusic =
+      document.getElementById(
+        "backgroundMusic"
+      );
+
+
+    backgroundMusic.volume = 0.45;
+
+
+    /* =========================
+       RESTORE MUSIC POSITION
+    ========================= */
+
+    const savedTime =
+      localStorage.getItem(
+        "musicTime"
+      );
+
+
+    if (savedTime !== null) {
+
+      backgroundMusic.currentTime =
+        parseFloat(savedTime);
+
+    }
+
+
+    /* =========================
+       START MUSIC
+    ========================= */
+
+    function startMusic() {
+
+      backgroundMusic.play()
+        .catch(() => {
+
+          /*
+            Browser mungkin memblokir
+            autoplay.
+          */
+
+        });
+
+    }
+
+
+    startMusic();
+
+
+    /* =========================
+       AUTOPLAY FALLBACK
+    ========================= */
+
+    document.addEventListener(
+      "click",
+      () => {
+
+        if (
+          backgroundMusic.paused
+        ) {
+
+          backgroundMusic.play()
+            .catch(() => {});
+
+        }
+
+      },
+      {
+        once: true
+      }
+    );
+
+
+    /* =========================
        ELEMENTS
     ========================= */
 
@@ -930,6 +1030,34 @@
         );
 
       }
+    );
+
+
+    /* =========================
+       KEEP MUSIC POSITION UPDATED
+    ========================= */
+
+    setInterval(
+      () => {
+
+        try {
+
+          localStorage.setItem(
+            "musicTime",
+            backgroundMusic.currentTime
+          );
+
+        } catch (error) {
+
+          console.log(
+            "Unable to save music position:",
+            error
+          );
+
+        }
+
+      },
+      1000
     );
 
 
