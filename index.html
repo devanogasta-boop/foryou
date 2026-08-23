@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>For You ♡</title>
+
 
   <style>
 
@@ -14,6 +21,7 @@
       box-sizing: border-box;
     }
 
+
     html,
     body {
       width: 100%;
@@ -21,8 +29,9 @@
       overflow: hidden;
     }
 
+
     body {
-      background: #6eb9df;
+      background: #061525;
       font-family: Georgia, serif;
     }
 
@@ -32,6 +41,7 @@
     ========================= */
 
     .opening {
+
       position: relative;
 
       width: 100vw;
@@ -46,17 +56,16 @@
       background:
         radial-gradient(
           circle at 50% 35%,
-          #e8f9ff 0%,
-          #b8e8fa 25%,
-          #8bd0ee 50%,
-          #64aed4 75%,
-          #4789b7 100%
+          #164b70 0%,
+          #0c3555 35%,
+          #08243d 65%,
+          #061525 100%
         );
     }
 
 
     /* =========================
-       SOFT LIGHT
+       SOFT BLUE LIGHT
     ========================= */
 
     .opening::before {
@@ -74,9 +83,9 @@
       border-radius: 50%;
 
       background:
-        rgba(255, 255, 255, 0.22);
+        rgba(55, 160, 220, 0.16);
 
-      filter: blur(70px);
+      filter: blur(80px);
 
       top: 50%;
       left: 50%;
@@ -140,7 +149,7 @@
 
       text-shadow:
         0 4px 20px
-        rgba(30, 90, 130, 0.25);
+        rgba(80, 190, 255, 0.35);
     }
 
 
@@ -151,7 +160,7 @@
     p {
 
       color:
-        rgba(255, 255, 255, 0.92);
+        rgba(225, 245, 255, 0.9);
 
       font-size: 17px;
 
@@ -159,7 +168,7 @@
 
       text-shadow:
         0 2px 10px
-        rgba(30, 90, 130, 0.2);
+        rgba(0, 0, 0, 0.2);
     }
 
 
@@ -179,9 +188,10 @@
       border-radius: 50px;
 
       background:
-        rgba(255, 255, 255, 0.95);
+        rgba(255, 255, 255, 0.96);
 
-      color: #4b8fbd;
+      color:
+        #16476a;
 
       font-family: Georgia, serif;
 
@@ -191,7 +201,7 @@
 
       box-shadow:
         0 10px 30px
-        rgba(35, 100, 140, 0.25);
+        rgba(20, 100, 150, 0.3);
 
       transition:
         transform 0.3s ease,
@@ -206,7 +216,7 @@
 
       box-shadow:
         0 15px 35px
-        rgba(35, 100, 140, 0.35);
+        rgba(20, 120, 180, 0.4);
     }
 
 
@@ -537,6 +547,7 @@
     }
 
   </style>
+
 </head>
 
 
@@ -548,6 +559,8 @@
     id="opening"
   >
 
+
+    <!-- CENTER CONTENT -->
 
     <div
       class="content"
@@ -573,6 +586,8 @@
     </div>
 
 
+    <!-- FLASH -->
+
     <div
       class="flash"
       id="flash"
@@ -590,16 +605,27 @@
     ========================= */
 
     const opening =
-      document.getElementById("opening");
+      document.getElementById(
+        "opening"
+      );
+
 
     const content =
-      document.getElementById("content");
+      document.getElementById(
+        "content"
+      );
+
 
     const startButton =
-      document.getElementById("startButton");
+      document.getElementById(
+        "startButton"
+      );
+
 
     const flash =
-      document.getElementById("flash");
+      document.getElementById(
+        "flash"
+      );
 
 
     let started = false;
@@ -621,16 +647,112 @@
 
 
     /* =========================
+       POP SOUND
+    ========================= */
+
+    function playBeginSound() {
+
+      const AudioContext =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+
+      if (!AudioContext) {
+
+        return;
+
+      }
+
+
+      const audioContext =
+        new AudioContext();
+
+
+      const oscillator =
+        audioContext.createOscillator();
+
+
+      const gain =
+        audioContext.createGain();
+
+
+      /*
+        POP SOUND
+      */
+
+      oscillator.type =
+        "sine";
+
+
+      oscillator.frequency.setValueAtTime(
+        240,
+        audioContext.currentTime
+      );
+
+
+      oscillator.frequency.exponentialRampToValueAtTime(
+        75,
+        audioContext.currentTime + 0.18
+      );
+
+
+      /*
+        VOLUME
+      */
+
+      gain.gain.setValueAtTime(
+        0.0001,
+        audioContext.currentTime
+      );
+
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.9,
+        audioContext.currentTime + 0.015
+      );
+
+
+      gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        audioContext.currentTime + 0.22
+      );
+
+
+      oscillator.connect(
+        gain
+      );
+
+
+      gain.connect(
+        audioContext.destination
+      );
+
+
+      oscillator.start();
+
+
+      oscillator.stop(
+        audioContext.currentTime + 0.22
+      );
+
+    }
+
+
+    /* =========================
        CREATE FLOWER
     ========================= */
 
     function createFlower(index) {
 
       const flower =
-        document.createElement("img");
+        document.createElement(
+          "img"
+        );
 
 
-      flower.classList.add("flower");
+      flower.classList.add(
+        "flower"
+      );
 
 
       flower.src =
@@ -643,7 +765,7 @@
 
 
       /*
-        Bunga besar.
+        BUNGA BESAR
       */
 
       const size =
@@ -658,7 +780,7 @@
 
 
       /*
-        Menyebar ke seluruh layar.
+        POSISI AKHIR
       */
 
       const x =
@@ -686,7 +808,7 @@
 
 
       /*
-        Ukuran random.
+        RANDOM SCALE
       */
 
       const scale =
@@ -701,7 +823,7 @@
 
 
       /*
-        Putaran random.
+        RANDOM ROTATION
       */
 
       const rotation =
@@ -716,7 +838,7 @@
 
 
       /*
-        Kecepatan random.
+        RANDOM SPEED
       */
 
       const duration =
@@ -745,6 +867,7 @@
 
 
       return flower;
+
     }
 
 
@@ -756,7 +879,9 @@
 
 
       if (started) {
+
         return;
+
       }
 
 
@@ -764,7 +889,7 @@
 
 
       /*
-        Hilangkan opening.
+        HILANGKAN TEXT
       */
 
       content.classList.add(
@@ -776,7 +901,7 @@
 
 
       /*
-        70 bunga.
+        CREATE 70 FLOWERS
       */
 
       for (
@@ -797,7 +922,7 @@
 
 
       /*
-        SPRAY!
+        SPRAY
       */
 
       requestAnimationFrame(
@@ -818,7 +943,7 @@
 
 
       /*
-        FULL SCREEN MOMENT
+        FULL SCREEN
       */
 
       setTimeout(
@@ -889,7 +1014,7 @@
 
 
       /*
-        GO TO LETTERS PAGE
+        GO TO GAME
       */
 
       setTimeout(
@@ -906,12 +1031,27 @@
 
 
     /* =========================
-       BUTTON
+       BEGIN BUTTON
     ========================= */
 
     startButton.addEventListener(
       "click",
-      startFlowerShow
+      () => {
+
+        /*
+          🔊 POP!
+        */
+
+        playBeginSound();
+
+
+        /*
+          🌸 FLOWER ANIMATION
+        */
+
+        startFlowerShow();
+
+      }
     );
 
 
@@ -919,4 +1059,5 @@
 
 
 </body>
+
 </html>
