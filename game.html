@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Catch the Hearts ♡</title>
+
+
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+
+    html,
+    body {
+
+      width: 100%;
+      height: 100%;
+
+      overflow: hidden;
+    }
+
+
+    body {
+
+      font-family: Georgia, serif;
+
+      background:
+        radial-gradient(
+          circle at center,
+          #fffafd,
+          #f8dce8
+        );
+
+      color: #7d4058;
+    }
+
+
+    /* =========================
+       GAME SCREEN
+    ========================= */
+
+    .game {
+
+      position: relative;
+
+      width: 100vw;
+      height: 100vh;
+
+      overflow: hidden;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+    }
+
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .header {
+
+      position: relative;
+
+      z-index: 20;
+
+      text-align: center;
+
+      padding-top: 45px;
+
+      pointer-events: none;
+    }
+
+
+    .header h1 {
+
+      font-size:
+        clamp(30px, 8vw, 48px);
+
+      font-weight: normal;
+
+      margin-bottom: 10px;
+    }
+
+
+    .header p {
+
+      font-size: 15px;
+
+      color: #986579;
+    }
+
+
+    /* =========================
+       SCORE
+    ========================= */
+
+    .score {
+
+      position: relative;
+
+      z-index: 20;
+
+      margin-top: 15px;
+
+      padding:
+        8px 20px;
+
+      border-radius: 30px;
+
+      background:
+        rgba(255,255,255,0.75);
+
+      box-shadow:
+        0 5px 20px
+        rgba(120,60,90,0.12);
+
+      font-size: 15px;
+    }
+
+
+    /* =========================
+       PLAY AREA
+    ========================= */
+
+    .play-area {
+
+      position: absolute;
+
+      inset: 0;
+
+      z-index: 5;
+    }
+
+
+    /* =========================
+       HEART
+    ========================= */
+
+    .heart {
+
+      position: absolute;
+
+      width: 65px;
+      height: 65px;
+
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+
+      font-size: 45px;
+
+      cursor: pointer;
+
+      user-select: none;
+
+      animation:
+        floatHeart
+        1.5s
+        ease-in-out
+        infinite alternate;
+
+      filter:
+        drop-shadow(
+          0 5px 8px
+          rgba(120,60,90,0.2)
+        );
+
+      transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+    }
+
+
+    .heart:active {
+
+      transform:
+        scale(0.7);
+    }
+
+
+    @keyframes floatHeart {
+
+      from {
+
+        transform:
+          translateY(-6px)
+          rotate(-8deg);
+      }
+
+      to {
+
+        transform:
+          translateY(6px)
+          rotate(8deg);
+      }
+    }
+
+
+    /* =========================
+       FOUND EFFECT
+    ========================= */
+
+    .heart.found {
+
+      opacity: 0;
+
+      transform:
+        scale(2);
+    }
+
+
+    /* =========================
+       FINISH SCREEN
+    ========================= */
+
+    .finish {
+
+      position: absolute;
+
+      inset: 0;
+
+      z-index: 50;
+
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+
+      text-align: center;
+
+      padding: 30px;
+
+      background:
+        rgba(255,244,248,0.94);
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      transition:
+        opacity 0.8s ease;
+    }
+
+
+    .finish.show {
+
+      opacity: 1;
+
+      pointer-events: auto;
+    }
+
+
+    .finish-box {
+
+      max-width: 400px;
+    }
+
+
+    .finish-box h2 {
+
+      font-size:
+        clamp(30px, 8vw, 46px);
+
+      font-weight: normal;
+
+      margin-bottom: 15px;
+    }
+
+
+    .finish-box p {
+
+      color: #986579;
+
+      line-height: 1.7;
+
+      margin-bottom: 25px;
+    }
+
+
+    .continue {
+
+      border: none;
+
+      padding:
+        14px 30px;
+
+      border-radius: 40px;
+
+      background: #9b5872;
+
+      color: white;
+
+      font-family: Georgia, serif;
+
+      font-size: 15px;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 10px 25px
+        rgba(100,40,70,0.2);
+
+      transition:
+        transform 0.3s ease;
+    }
+
+
+    .continue:hover {
+
+      transform:
+        scale(1.06);
+    }
+
+
+    /* =========================
+       SPARKLES
+    ========================= */
+
+    .sparkle {
+
+      position: absolute;
+
+      pointer-events: none;
+
+      font-size: 22px;
+
+      animation:
+        sparkle 0.8s
+        ease-out
+        forwards;
+    }
+
+
+    @keyframes sparkle {
+
+      0% {
+
+        opacity: 1;
+
+        transform:
+          scale(0.5);
+      }
+
+      100% {
+
+        opacity: 0;
+
+        transform:
+          scale(1.8)
+          translateY(-30px);
+      }
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 600px) {
+
+      .header {
+
+        padding-top: 35px;
+      }
+
+
+      .header h1 {
+
+        font-size: 32px;
+      }
+
+
+      .heart {
+
+        width: 60px;
+        height: 60px;
+
+        font-size: 42px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+  <main class="game">
+
+
+    <div class="header">
+
+      <h1>
+        Catch the Hearts ♡
+      </h1>
+
+      <p>
+        Catch 7 little hearts to continue...
+      </p>
+
+      <div
+        class="score"
+        id="score"
+      >
+        0 / 7
+      </div>
+
+    </div>
+
+
+    <div
+      class="play-area"
+      id="playArea"
+    ></div>
+
+
+    <div
+      class="finish"
+      id="finish"
+    >
+
+      <div class="finish-box">
+
+        <h2>
+          You found them all ♡
+        </h2>
+
+        <p>
+          But I left a few little words
+          waiting for you...
+        </p>
+
+        <button
+          class="continue"
+          id="continueButton"
+        >
+          Continue ♡
+        </button>
+
+      </div>
+
+    </div>
+
+
+  </main>
+
+
+  <script>
+
+
+    /* =========================
+       VARIABLES
+    ========================= */
+
+    const playArea =
+      document.getElementById(
+        "playArea"
+      );
+
+
+    const scoreText =
+      document.getElementById(
+        "score"
+      );
+
+
+    const finish =
+      document.getElementById(
+        "finish"
+      );
+
+
+    const continueButton =
+      document.getElementById(
+        "continueButton"
+      );
+
+
+    let score = 0;
+
+    const target = 7;
+
+
+    /* =========================
+       RANDOM POSITION
+    ========================= */
+
+    function randomPosition() {
+
+      const screenWidth =
+        window.innerWidth;
+
+
+      const screenHeight =
+        window.innerHeight;
+
+
+      const x =
+        20 +
+        Math.random()
+        * (screenWidth - 80);
+
+
+      const y =
+        150 +
+        Math.random()
+        * (screenHeight - 230);
+
+
+      return {
+        x,
+        y
+      };
+
+    }
+
+
+    /* =========================
+       CREATE HEART
+    ========================= */
+
+    function createHeart() {
+
+
+      const heart =
+        document.createElement(
+          "div"
+        );
+
+
+      heart.classList.add(
+        "heart"
+      );
+
+
+      heart.textContent = "♡";
+
+
+      const position =
+        randomPosition();
+
+
+      heart.style.left =
+        position.x + "px";
+
+
+      heart.style.top =
+        position.y + "px";
+
+
+      playArea.appendChild(
+        heart
+      );
+
+
+      heart.addEventListener(
+        "click",
+        () => {
+
+          collectHeart(
+            heart
+          );
+
+        }
+      );
+
+    }
+
+
+    /* =========================
+       COLLECT HEART
+    ========================= */
+
+    function collectHeart(
+      heart
+    ) {
+
+
+      if (
+        heart.classList.contains(
+          "found"
+        )
+      ) {
+
+        return;
+
+      }
+
+
+      score++;
+
+
+      scoreText.textContent =
+        score + " / " + target;
+
+
+      createSparkle(
+        heart
+      );
+
+
+      heart.classList.add(
+        "found"
+      );
+
+
+      setTimeout(
+        () => {
+
+          heart.remove();
+
+
+          if (
+            score < target
+          ) {
+
+            createHeart();
+
+          } else {
+
+            showFinish();
+
+          }
+
+        },
+        250
+      );
+
+    }
+
+
+    /* =========================
+       SPARKLE
+    ========================= */
+
+    function createSparkle(
+      heart
+    ) {
+
+
+      const sparkle =
+        document.createElement(
+          "div"
+        );
+
+
+      sparkle.classList.add(
+        "sparkle"
+      );
+
+
+      sparkle.textContent = "✦";
+
+
+      sparkle.style.left =
+        heart.offsetLeft + "px";
+
+
+      sparkle.style.top =
+        heart.offsetTop + "px";
+
+
+      playArea.appendChild(
+        sparkle
+      );
+
+
+      setTimeout(
+        () => {
+
+          sparkle.remove();
+
+        },
+        800
+      );
+
+    }
+
+
+    /* =========================
+       FINISH
+    ========================= */
+
+    function showFinish() {
+
+      setTimeout(
+        () => {
+
+          finish.classList.add(
+            "show"
+          );
+
+        },
+        500
+      );
+
+    }
+
+
+    /* =========================
+       START GAME
+    ========================= */
+
+    for (
+      let i = 0;
+      i < 1;
+      i++
+    ) {
+
+      createHeart();
+
+    }
+
+
+    /* =========================
+       CONTINUE
+    ========================= */
+
+    continueButton.addEventListener(
+      "click",
+      () => {
+
+        window.location.href =
+          "messages.html";
+
+      }
+    );
+
+
+  </script>
+
+
+</body>
+
+</html>
