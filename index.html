@@ -261,10 +261,9 @@
         center center;
 
 
-      /*
-        WARNA BUNGA DIBUAT
-        LEBIH TERANG DAN PEKAT
-      */
+      /* =========================
+         BRIGHT FLOWER COLORS
+      ========================= */
 
       filter:
         brightness(1.4)
@@ -275,14 +274,6 @@
           rgba(255, 255, 255, 0.4)
         );
 
-
-      /*
-        PENTING:
-        jangan gunakan multiply
-        supaya warna bunga
-        tidak menyatu dengan
-        background biru.
-      */
 
       mix-blend-mode:
         normal;
@@ -624,19 +615,13 @@
   </main>
 
 
-  <!--
-    SOUND POP
-    Pakai nama file audio yang
-    SUDAH berhasil di kode kamu.
-    
-    Kalau kode kamu sekarang sudah
-    punya bagian audio sendiri,
-    pertahankan nama file tersebut.
-  -->
+  <!-- =========================
+       BACKGROUND MUSIC
+  ========================= -->
 
   <audio
-    id="popSound"
-    src="click.mp3"
+    id="backgroundMusic"
+    src="You Da One Rihanna.mp3"
     preload="auto"
   ></audio>
 
@@ -672,9 +657,9 @@
       );
 
 
-    const popSound =
+    const backgroundMusic =
       document.getElementById(
-        "popSound"
+        "backgroundMusic"
       );
 
 
@@ -835,17 +820,20 @@
 
 
       /* =========================
-         POP SOUND
+         START MUSIC
       ========================= */
 
-      popSound.currentTime = 0;
+      backgroundMusic.currentTime = 0;
 
-      popSound.volume = 1.0;
+      backgroundMusic.volume = 0.6;
 
-      popSound.play()
+
+      backgroundMusic.play()
         .catch(() => {
 
-          /* Ignore browser audio error */
+          console.log(
+            "Music could not play."
+          );
 
         });
 
@@ -976,11 +964,28 @@
 
 
       /* =========================
-         GO TO GAME
+         SAVE MUSIC POSITION
+         BEFORE GAME
       ========================= */
 
       setTimeout(
         () => {
+
+          try {
+
+            sessionStorage.setItem(
+              "musicTime",
+              backgroundMusic.currentTime
+            );
+
+          } catch (error) {
+
+            console.log(
+              "Could not save music position."
+            );
+
+          }
+
 
           window.location.href =
             "game.html";
