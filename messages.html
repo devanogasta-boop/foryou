@@ -348,6 +348,7 @@
           scale(1);
       }
 
+
       50% {
 
         opacity: 1;
@@ -356,6 +357,7 @@
           translateY(-12px)
           scale(1.2);
       }
+
     }
 
 
@@ -383,16 +385,20 @@
       from {
 
         opacity: 0;
+
         transform:
           translateY(20px);
       }
 
+
       to {
 
         opacity: 1;
+
         transform:
           translateY(0);
       }
+
     }
 
 
@@ -431,6 +437,16 @@
       box-shadow:
         0 10px 30px
         rgba(0, 0, 0, 0.25);
+
+      transition:
+        transform 0.25s ease;
+    }
+
+
+    .continue-button:active {
+
+      transform:
+        scale(0.95);
     }
 
 
@@ -444,8 +460,10 @@
 
         min-height: 190px;
 
-        padding: 30px 20px;
+        padding:
+          30px 20px;
       }
+
 
       .message {
 
@@ -465,7 +483,9 @@
   <main class="screen">
 
 
-    <!-- FLOATING STARS -->
+    <!-- =========================
+         FLOATING STARS
+    ========================= -->
 
     <div class="star">✦</div>
 
@@ -479,9 +499,12 @@
     <div class="content">
 
 
-      <!-- NORMAL SCREEN -->
+      <!-- =========================
+           NORMAL SCREEN
+      ========================= -->
 
       <div id="normalContent">
+
 
         <div class="small-title">
           just a little something
@@ -524,15 +547,19 @@
           1 / 5
         </div>
 
+
       </div>
 
 
-      <!-- FINISH SCREEN -->
+      <!-- =========================
+           FINISH SCREEN
+      ========================= -->
 
       <div
         class="finish"
         id="finish"
       >
+
 
         <div class="small-title">
           and there's more...
@@ -557,23 +584,14 @@
           Continue ♡
         </button>
 
+
       </div>
 
 
     </div>
 
+
   </main>
-
-
-  <!-- =========================
-       SOFT POP SOUND
-  ========================= -->
-
-  <audio
-    id="popSound"
-    src="pop.mp3"
-    preload="auto"
-  ></audio>
 
 
   <script>
@@ -601,16 +619,26 @@
     let current = 0;
 
 
+    /* =========================
+       ELEMENTS
+    ========================= */
+
     const message =
-      document.getElementById("message");
+      document.getElementById(
+        "message"
+      );
 
 
     const tapButton =
-      document.getElementById("tapButton");
+      document.getElementById(
+        "tapButton"
+      );
 
 
     const counter =
-      document.getElementById("counter");
+      document.getElementById(
+        "counter"
+      );
 
 
     const normalContent =
@@ -620,7 +648,9 @@
 
 
     const finish =
-      document.getElementById("finish");
+      document.getElementById(
+        "finish"
+      );
 
 
     const continueButton =
@@ -630,36 +660,144 @@
 
 
     /* =========================
-       POP SOUND
+       SOFT POP SOUND
+       
+       Tidak membutuhkan file audio.
+       Suara dibuat langsung oleh browser.
     ========================= */
 
-    const popSound =
-      document.getElementById(
-        "popSound"
-      );
+    let audioContext = null;
 
-
-    /* =========================
-       PLAY SOFT POP
-    ========================= */
 
     function playPop() {
 
-      popSound.currentTime = 0;
+      try {
 
-      popSound.volume = 0.35;
+        /* =========================
+           CREATE AUDIO CONTEXT
+        ========================= */
 
-      popSound.play().catch(() => {
+        if (!audioContext) {
 
-        /* Ignore browser audio error */
+          audioContext =
+            new (
+              window.AudioContext ||
+              window.webkitAudioContext
+            )();
 
-      });
+        }
+
+
+        /* =========================
+           RESUME AUDIO
+        ========================= */
+
+        if (
+          audioContext.state ===
+          "suspended"
+        ) {
+
+          audioContext.resume();
+
+        }
+
+
+        /* =========================
+           OSCILLATOR
+        ========================= */
+
+        const oscillator =
+          audioContext.createOscillator();
+
+
+        /* =========================
+           VOLUME
+        ========================= */
+
+        const gain =
+          audioContext.createGain();
+
+
+        /* =========================
+           SOFT SOUND
+        ========================= */
+
+        oscillator.type =
+          "sine";
+
+
+        const frequency = 650;
+
+
+        oscillator.frequency.setValueAtTime(
+          frequency,
+          audioContext.currentTime
+        );
+
+
+        oscillator.frequency.exponentialRampToValueAtTime(
+          880,
+          audioContext.currentTime + 0.16
+        );
+
+
+        /* =========================
+           SOFT VOLUME
+        ========================= */
+
+        gain.gain.setValueAtTime(
+          0.08,
+          audioContext.currentTime
+        );
+
+
+        gain.gain.exponentialRampToValueAtTime(
+          0.001,
+          audioContext.currentTime + 0.16
+        );
+
+
+        /* =========================
+           CONNECT
+        ========================= */
+
+        oscillator.connect(
+          gain
+        );
+
+
+        gain.connect(
+          audioContext.destination
+        );
+
+
+        /* =========================
+           PLAY
+        ========================= */
+
+        oscillator.start();
+
+
+        oscillator.stop(
+          audioContext.currentTime +
+          0.16
+        );
+
+
+      } catch (error) {
+
+        console.log(
+          "Sound unavailable:",
+          error
+        );
+
+      }
 
     }
 
 
     /* =========================
-       SHOW FIRST MESSAGE
+       SHOW MESSAGE
     ========================= */
 
     function showMessage() {
@@ -689,27 +827,39 @@
     }
 
 
+    /* =========================
+       FIRST MESSAGE
+    ========================= */
+
     showMessage();
 
 
     /* =========================
-       TAP
+       TAP BUTTON
     ========================= */
 
     tapButton.addEventListener(
       "click",
       () => {
 
-        /*
-          Suara lembut setiap
-          kali tombol ditekan.
-        */
+
+        /* =========================
+           SOFT POP
+        ========================= */
 
         playPop();
 
 
+        /* =========================
+           NEXT MESSAGE
+        ========================= */
+
         current++;
 
+
+        /* =========================
+           FINISH
+        ========================= */
 
         if (
           current >= messages.length
@@ -718,14 +868,20 @@
           normalContent.style.display =
             "none";
 
+
           finish.classList.add(
             "show"
           );
+
 
           return;
 
         }
 
+
+        /* =========================
+           SHOW NEXT
+        ========================= */
 
         showMessage();
 
@@ -734,15 +890,30 @@
 
 
     /* =========================
-       CONTINUE
+       CONTINUE BUTTON
     ========================= */
 
     continueButton.addEventListener(
       "click",
       () => {
 
-        window.location.href =
-          "letters.html";
+        /*
+          Sedikit suara juga ketika
+          Continue ditekan.
+        */
+
+        playPop();
+
+
+        setTimeout(
+          () => {
+
+            window.location.href =
+              "letters.html";
+
+          },
+          150
+        );
 
       }
     );
